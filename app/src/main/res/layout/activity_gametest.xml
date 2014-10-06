@@ -8,7 +8,7 @@
         android:id="@+id/ll_gameBoard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2ECCFA">
+        android:background="#ff6efa43">
 
         <TableLayout
             android:id="@+id/tl_gameBoard"
