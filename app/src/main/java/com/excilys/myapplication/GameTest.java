@@ -20,7 +20,6 @@ import helper.StringHelper;
 public class GameTest extends Activity {
 
     private ScaleGestureDetector scaleGestureDetector;
-    private int boardLength = 10;
     private int tileSize = 64;
     private float mx, my;
     private boolean moved = false;
@@ -42,21 +41,13 @@ public class GameTest extends Activity {
 
         TableLayout tlGameBoard = (TableLayout) findViewById(R.id.tl_gameBoard);
         LinearLayout llGameBoard = (LinearLayout) findViewById(R.id.ll_gameBoard);
-        hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
-        vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
-        hScroll.setMinimumHeight((int) (boardLength * tileSize * Math.sqrt(2D)));
-        hScroll.setMinimumWidth((int) (boardLength * tileSize * Math.sqrt(2D)));
-        vScroll.setMinimumHeight((int) (boardLength * tileSize * Math.sqrt(2D)));
-        vScroll.setMinimumWidth((int) (boardLength * tileSize * Math.sqrt(2D)));
         Drawable drawable = getResources().getDrawable(R.drawable.textview_border);
 
-
-        scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(),
-                new ScaleListener());
+        scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
-        for (int i = 0; i < boardLength; i++) {
+        for (int i = 0; i < map.length; i++) {
             TableRow tableRow = new TableRow(this);
-            for (int j = 0; j < boardLength; j++) {
+            for (int j = 0; j < map[i].length(); j++) {
                 final TextView textView = new TextView(this);
                 textView.setLayoutParams(params);
                 textView.setText("");
@@ -85,7 +76,6 @@ public class GameTest extends Activity {
             llGameBoard.setBackground(getResources().getDrawable(R.drawable.grass_background));
         }
         tlGameBoard.setRotation(45);
-//        tlGameBoard.setRotationX(10);
     }
 
     @Override
@@ -121,7 +111,7 @@ public class GameTest extends Activity {
 
 
                         if (!moved && currentTextView != null) {
-                          //Traitement lors du click sur une case
+                            //Traitement lors du click sur une case
                             currentTextView.setBackgroundColor(Color.BLUE);
 
 
