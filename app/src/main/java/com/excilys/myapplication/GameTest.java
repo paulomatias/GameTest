@@ -41,7 +41,10 @@ public class GameTest extends Activity {
 
         TableLayout tlGameBoard = (TableLayout) findViewById(R.id.tl_gameBoard);
         LinearLayout llGameBoard = (LinearLayout) findViewById(R.id.ll_gameBoard);
+        hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
+        vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
         Drawable drawable = getResources().getDrawable(R.drawable.textview_border);
+
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
@@ -113,8 +116,6 @@ public class GameTest extends Activity {
                         if (!moved && currentTextView != null) {
                             //Traitement lors du click sur une case
                             currentTextView.setBackgroundColor(Color.BLUE);
-
-
                         } else {
                             currentTextView = null;
                             vScroll.scrollBy((int) (mx - curX), (int) (my - curY));
