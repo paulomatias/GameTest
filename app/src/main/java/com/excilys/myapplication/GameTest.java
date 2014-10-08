@@ -2,9 +2,6 @@ package com.excilys.myapplication;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import java.util.ArrayList;
 
 import helper.StringHelper;
 
@@ -154,6 +149,18 @@ public class GameTest extends Activity {
         tlGameBoardElement.setTranslationY(offsetTop);
         tlGameBoardElement.setRotation(45);
         tlGameBoardElement.setRotationX(20);
+
+//
+//        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
+//        BitmapHelper bitmapHelper = new BitmapHelper();
+//        List<Bitmap> bitmaps = bitmapHelper.createBitmaps(bMap);
+//        ImageView imageView =new ImageView(this);
+//        imageView.setMinimumHeight(128);
+//        imageView.setMinimumWidth(128);
+//        imageView.setImageBitmap(bitmaps.get(0));
+//
+//        rlGameBoard.addView(imageView);
+
     }
 
     @Override
@@ -223,25 +230,6 @@ public class GameTest extends Activity {
         return null;
     }
 
-    ArrayList<Bitmap> createBitmaps() {
-
-        ArrayList<Bitmap> bitmapsArray = new ArrayList<Bitmap>();
-
-        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tileset);
-        Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, 240, 240, true);
-
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 0, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 0, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 0, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 80, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 80, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 80, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 160, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 160, 80, 80));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 160, 80, 80));
-
-        return bitmapsArray;
-    }
 
     private class ScaleListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
