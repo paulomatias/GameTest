@@ -2,9 +2,13 @@ package com.excilys.myapplication;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -13,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import java.util.ArrayList;
 
 import helper.StringHelper;
 
@@ -36,6 +42,7 @@ public class GameTest extends Activity {
     private Resources resources;
 
     // Drawable pour la map
+    //private ArrayList<Bitmap> bitmapsFromTiles;
     private Drawable dTransparent;
     private Drawable dGrass;
     private Drawable dStone;
@@ -48,6 +55,9 @@ public class GameTest extends Activity {
         setContentView(R.layout.activity_gametest);
 
         resources = getResources();
+        // Exemple de récupération de bitmap crop
+        // bitmapsFromTiles = createBitmaps();
+        // dTransparent = new BitmapDrawable(resources, bitmapsFromTiles.get(0));
         dTransparent = resources.getDrawable(R.drawable.transparent);
         dGrass = resources.getDrawable(R.drawable.grass);
         dStone = resources.getDrawable(R.drawable.stone);
@@ -76,7 +86,7 @@ public class GameTest extends Activity {
             TableRow tableRowGround = new TableRow(this);
             //Ajout d'une row pour element
             TableRow tableRowElement = new TableRow(this);
-            String [] mapColumn = mapLine[i].split("x");
+            String[] mapColumn = mapLine[i].split("x");
 
             for (int j = 0; j < mapColumn.length; j++) {
                 if (mapColumn.length > maxLengthX) {
@@ -85,7 +95,8 @@ public class GameTest extends Activity {
                 //Creation image view pour ground
                 final ImageView imageViewGround = new ImageView(this);
                 imageViewGround.setLayoutParams(params);
-                imageViewGround.setBackground(switchTile(Integer.parseInt(mapColumn[i])));
+                Log.i("truc", "" + mapColumn[j]);
+                imageViewGround.setBackground(switchTile(Integer.parseInt(mapColumn[j])));
                 tableRowGround.addView(imageViewGround);
                 //Creation image view pour ground
                 final ImageView imageViewElement = new ImageView(this);
@@ -206,6 +217,26 @@ public class GameTest extends Activity {
                 break;
         }
         return null;
+    }
+
+    ArrayList<Bitmap> createBitmaps() {
+
+        ArrayList<Bitmap> bitmapsArray = new ArrayList<Bitmap>();
+
+        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tileset);
+        Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, 240, 240, true);
+
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 0, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 0, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 0, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 80, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 80, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 80, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 160, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 80, 160, 80, 80));
+        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 160, 160, 80, 80));
+
+        return bitmapsArray;
     }
 
     private class ScaleListener extends
