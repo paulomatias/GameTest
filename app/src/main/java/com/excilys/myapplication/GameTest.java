@@ -193,8 +193,7 @@ public class GameTest extends Activity {
         }
         return null;
     }
-            if (scaleFactor > 0.5F && scaleFactor < 1.0F && detector.isInProgress()) {
-            }
+
     private class ScaleListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
         float x;
