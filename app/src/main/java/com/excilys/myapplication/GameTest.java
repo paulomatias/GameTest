@@ -25,7 +25,10 @@ public class GameTest extends Activity {
     private boolean isZoomed = false;
     private HScroll hScroll;
     private VScroll vScroll;
+    private TableLayout tlGameBoardElement;
+    private TableLayout tlGameBoardGround;
     private RelativeLayout rlBoardContainer;
+    private RelativeLayout rlGameBoard;
     private float scaleFactor = 1.0f;
     private ImageView currentImageView;
     private int maxLengthX = 0;
@@ -55,9 +58,9 @@ public class GameTest extends Activity {
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
         String[] mapLine = mapString.split("\\+");
 
-        TableLayout tlGameBoardGround = (TableLayout) findViewById(R.id.tl_gameBoardGround);
-        TableLayout tlGameBoardElement = (TableLayout) findViewById(R.id.tl_gameBoardElement);
-        RelativeLayout rlGameBoard = (RelativeLayout) findViewById(R.id.rl_gameBoard);
+        tlGameBoardGround = (TableLayout) findViewById(R.id.tl_gameBoardGround);
+        tlGameBoardElement = (TableLayout) findViewById(R.id.tl_gameBoardElement);
+        rlGameBoard = (RelativeLayout) findViewById(R.id.rl_gameBoard);
         hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
         vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
         rlBoardContainer = (RelativeLayout) findViewById(R.id.rl_boardContainer);
@@ -110,11 +113,11 @@ public class GameTest extends Activity {
         float offsetTop;
         float offsetLeft;
         if (maxLengthX >= maxLengthY) {
-            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 4);
-            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 4);
+            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 2);
+            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 8);
         } else {
-            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY + maxLengthX) - maxLengthX * tileSize / 4);
-            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY - maxLengthX) + maxLengthY * tileSize / 4);
+            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY + maxLengthX) - maxLengthX * tileSize / 2);
+            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY - maxLengthX) + maxLengthY * tileSize / 8);
         }
 
         int heightScroll = (int) (maxLengthY * tileSize + offsetTop * 2);
@@ -207,23 +210,15 @@ public class GameTest extends Activity {
 
     private class ScaleListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
-        float x;
-        float y;
 
-        @Override
-        public boolean onScaleBegin(ScaleGestureDetector detector) {
-            x = detector.getFocusX();
-            y = detector.getFocusY();
-            return true;
-        }
-
-        //TODO ZOOM
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
             isZoomed = true;
             // don't let the object get too small or too large.
-            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f));
+            scaleFactor = Math.max(1.0f, Math.min(scaleFactor, 4.0f));
+            rlGameBoard.setScaleX(scaleFactor);
+            rlGameBoard.setScaleY(scaleFactor);
             return true;
         }
     }
