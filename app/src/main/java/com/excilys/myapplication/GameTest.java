@@ -25,6 +25,7 @@ public class GameTest extends Activity {
     private boolean isZoomed = false;
     private HScroll hScroll;
     private VScroll vScroll;
+    private RelativeLayout rlBoardContainer;
     private float scaleFactor = 1.0f;
     private ImageView currentImageView;
     private int maxLengthX = 0;
@@ -54,10 +55,12 @@ public class GameTest extends Activity {
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
         String[] map = mapString.split("\\+");
 
-        TableLayout tlGameBoard = (TableLayout) findViewById(R.id.tl_gameBoard);
+        TableLayout tlGameBoardGround = (TableLayout) findViewById(R.id.tl_gameBoardGround);
+        TableLayout tlGameBoardElement = (TableLayout) findViewById(R.id.tl_gameBoardElement);
         RelativeLayout rlGameBoard = (RelativeLayout) findViewById(R.id.rl_gameBoard);
         hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
         vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
+        rlBoardContainer = (RelativeLayout) findViewById(R.id.rl_boardContainer);
         Drawable drawable = getResources().getDrawable(R.drawable.textview_border);
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
@@ -66,39 +69,43 @@ public class GameTest extends Activity {
 
         // Population du tableau représentant la carte
         for (int i = 0; i < map.length; i++) {
-            TableRow tableRow = new TableRow(this);
+            //Ajout d'une row pour ground
+            TableRow tableRowGround = new TableRow(this);
+            //Ajout d'une row pour element
+            TableRow tableRowElement = new TableRow(this);
             for (int j = 0; j < map[i].length(); j++) {
                 if (map[i].length() > maxLengthX) {
                     maxLengthX = map[i].length();
                 }
-                final ImageView imageView = new ImageView(this);
-                imageView.setLayoutParams(params);
-                imageView.setBackground(drawable);
-                imageView.setBackground(switchTile(Integer.parseInt(map[i].substring(j, j + 1))));
-
-                imageView.setOnTouchListener(new View.OnTouchListener() {
+                //Creation image view pour ground
+                final ImageView imageViewGround = new ImageView(this);
+                imageViewGround.setLayoutParams(params);
+                imageViewGround.setBackground(switchTile(Integer.parseInt(map[i].substring(j, j + 1))));
+                tableRowGround.addView(imageViewGround);
+                //Creation image view pour ground
+                final ImageView imageViewElement = new ImageView(this);
+                imageViewElement.setLayoutParams(params);
+//                imageViewElement.setBackground(dTransparent);
+                tableRowElement.addView(imageViewElement);
+                //click on element tile
+                imageViewElement.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            mx = event.getRawX();
-                            my = event.getRawY();
-                            currentImageView = imageView;
-                            return true;
-                        }
+                        currentImageView = imageViewElement;
                         return false;
                     }
                 });
-                tableRow.addView(imageView);
             }
-            tlGameBoard.addView(tableRow);
+            tlGameBoardGround.addView(tableRowGround);
+            tlGameBoardElement.addView(tableRowElement);
             rlGameBoard.setBackground(resources.getDrawable(R.drawable.grass_background));
         }
 
         // Initialisation et positionnement du GameBoard
-        initGameBoardPosition(tlGameBoard);
+        initGameBoardPosition(tlGameBoardGround, tlGameBoardElement);
     }
 
-    private void initGameBoardPosition(TableLayout tlGameBoard) {
+    private void initGameBoardPosition(TableLayout tlGameBoardGround, TableLayout tlGameBoardElement) {
         float offsetTop;
         float offsetLeft;
         if (maxLengthX >= maxLengthY) {
@@ -112,18 +119,23 @@ public class GameTest extends Activity {
         int heightScroll = (int) (maxLengthY * tileSize + offsetTop * 2);
         int widthScroll = (int) (maxLengthX * tileSize + offsetLeft * 2);
 
+        rlBoardContainer.setMinimumHeight(heightScroll);
         hScroll.setMinimumHeight(heightScroll);
         vScroll.setMinimumHeight(heightScroll);
 
+        rlBoardContainer.setMinimumWidth(widthScroll);
         hScroll.setMinimumWidth(widthScroll);
         vScroll.setMinimumWidth(widthScroll);
 
         FrameLayout.LayoutParams vParams = new VScroll.LayoutParams(widthScroll, heightScroll);
         hScroll.setLayoutParams(vParams);
 
-        tlGameBoard.setTranslationX(offsetLeft);
-        tlGameBoard.setTranslationY(offsetTop);
-        tlGameBoard.setRotation(45);
+        tlGameBoardGround.setTranslationX(offsetLeft);
+        tlGameBoardGround.setTranslationY(offsetTop);
+        tlGameBoardGround.setRotation(45);
+        tlGameBoardElement.setTranslationX(offsetLeft);
+        tlGameBoardElement.setTranslationY(offsetTop);
+        tlGameBoardElement.setRotation(45);
     }
 
     @Override
@@ -143,7 +155,6 @@ public class GameTest extends Activity {
                     curX = event.getX();
                     curY = event.getY();
                     if (!isZoomed && (Math.abs(my - curY) > 10 || Math.abs(mx - curX) > 10)) {
-
                         vScroll.scrollBy((int) (mx - curX), (int) (my - curY));
                         hScroll.scrollBy((int) (mx - curX), (int) (my - curY));
                         mx = curX;
@@ -152,7 +163,6 @@ public class GameTest extends Activity {
                     }
                     return true;
                 case MotionEvent.ACTION_UP:
-
                     if (!isZoomed) {
                         curX = event.getX();
                         curY = event.getY();

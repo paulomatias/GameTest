@@ -4,21 +4,36 @@
     android:layout_height="match_parent"
     android:background="#ff000000">
 
-        <com.excilys.myapplication.VScroll
-            android:id="@+id/vs_gameBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <com.excilys.myapplication.VScroll
+        android:id="@+id/vs_gameBoard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_light">
 
-            <com.excilys.myapplication.HScroll
-                android:id="@+id/hs_gameBoard"
+        <com.excilys.myapplication.HScroll
+            android:id="@+id/hs_gameBoard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_bright">
+
+            <RelativeLayout
+                android:id="@+id/rl_boardContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/holo_green_light">
 
                 <TableLayout
-                    android:id="@+id/tl_gameBoard"
+                    android:id="@+id/tl_gameBoardGround"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </TableLayout>
-            </com.excilys.myapplication.HScroll>
-        </com.excilys.myapplication.VScroll>
+                    android:layout_height="match_parent" />
+
+                <TableLayout
+                    android:id="@+id/tl_gameBoardElement"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+        </com.excilys.myapplication.HScroll>
+    </com.excilys.myapplication.VScroll>
 </RelativeLayout>
