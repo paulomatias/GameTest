@@ -89,8 +89,6 @@ public class GameTest extends Activity {
                         return false;
                     }
                 });
-                // Désactivation de l'accélération matérielle pour les TextViews
-                textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 tableRow.addView(textView);
             }
             tlGameBoard.addView(tableRow);
