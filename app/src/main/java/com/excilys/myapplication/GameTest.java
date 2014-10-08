@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +47,7 @@ public class GameTest extends Activity {
     private Drawable dStone;
     private Drawable dWater;
     private Drawable dRock;
+    private Drawable dCaracter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class GameTest extends Activity {
         dStone = resources.getDrawable(R.drawable.stone);
         dWater = resources.getDrawable(R.drawable.water);
         dRock = resources.getDrawable(R.drawable.rock);
+        dCaracter = resources.getDrawable(R.drawable.caracter);
 
         //Découpage des Tilemap
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
@@ -148,9 +149,11 @@ public class GameTest extends Activity {
         tlGameBoardGround.setTranslationX(offsetLeft);
         tlGameBoardGround.setTranslationY(offsetTop);
         tlGameBoardGround.setRotation(45);
+        tlGameBoardGround.setRotationX(20);
         tlGameBoardElement.setTranslationX(offsetLeft);
         tlGameBoardElement.setTranslationY(offsetTop);
         tlGameBoardElement.setRotation(45);
+        tlGameBoardElement.setRotationX(20);
     }
 
     @Override
@@ -183,7 +186,8 @@ public class GameTest extends Activity {
                         curY = event.getY();
                         if (!moved && currentImageView != null) {
                             //Traitement lors du click sur une case
-                            currentImageView.setBackgroundColor(Color.BLUE);
+                            currentImageView.setBackground(dCaracter);
+                            currentImageView.setRotation(-45);
                         } else {
                             currentImageView = null;
                             vScroll.scrollBy((int) (mx - curX), (int) (my - curY));
