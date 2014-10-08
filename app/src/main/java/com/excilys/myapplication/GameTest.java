@@ -33,6 +33,7 @@ public class GameTest extends Activity {
     private Resources resources;
 
     // Drawable pour la map
+    private Drawable dTransparent;
     private Drawable dGrass;
     private Drawable dStone;
     private Drawable dWater;
@@ -44,6 +45,7 @@ public class GameTest extends Activity {
         setContentView(R.layout.activity_gametest);
 
         resources = getResources();
+        dTransparent = resources.getDrawable(R.drawable.transparent);
         dGrass = resources.getDrawable(R.drawable.grass);
         dStone = resources.getDrawable(R.drawable.stone);
         dWater = resources.getDrawable(R.drawable.water);
@@ -102,7 +104,7 @@ public class GameTest extends Activity {
     private void initGameBoardPosition(TableLayout tlGameBoard) {
         float offsetTop;
         float offsetLeft;
-        if (maxLengthX > maxLengthY) {
+        if (maxLengthX >= maxLengthY) {
             offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 4);
             offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 2);
         } else {
@@ -119,13 +121,12 @@ public class GameTest extends Activity {
         hScroll.setMinimumWidth(widthScroll);
         vScroll.setMinimumWidth(widthScroll);
 
-        FrameLayout.LayoutParams vPArams = new VScroll.LayoutParams(widthScroll, heightScroll);
-        hScroll.setLayoutParams(vPArams);
+        FrameLayout.LayoutParams vParams = new VScroll.LayoutParams(widthScroll, heightScroll);
+        vParams.gravity = Gravity.CENTER;
+        hScroll.setLayoutParams(vParams);
 
         tlGameBoard.setTranslationX(offsetLeft);
         tlGameBoard.setTranslationY(offsetTop);
-        hScroll.smoothScrollTo(widthScroll / 2, 0);
-        vScroll.smoothScrollTo(0, heightScroll / 2);
         tlGameBoard.setRotation(45);
     }
 
@@ -182,12 +183,14 @@ public class GameTest extends Activity {
 
         switch (tileNumber) {
             case 0:
-                return dGrass;
+                return dTransparent;
             case 1:
-                return dRock;
+                return dGrass;
             case 2:
-                return dStone;
+                return dRock;
             case 3:
+                return dStone;
+            case 4:
                 return dWater;
             default:
                 break;
