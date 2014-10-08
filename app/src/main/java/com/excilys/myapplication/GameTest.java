@@ -53,7 +53,7 @@ public class GameTest extends Activity {
 
         //Découpage des Tilemap
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
-        String[] map = mapString.split("\\+");
+        String[] mapLine = mapString.split("\\+");
 
         TableLayout tlGameBoardGround = (TableLayout) findViewById(R.id.tl_gameBoardGround);
         TableLayout tlGameBoardElement = (TableLayout) findViewById(R.id.tl_gameBoardElement);
@@ -65,27 +65,28 @@ public class GameTest extends Activity {
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
-        maxLengthY = map.length;
+        maxLengthY = mapLine.length;
 
         // Population du tableau représentant la carte
-        for (int i = 0; i < map.length; i++) {
+        for (int i = 0; i < mapLine.length; i++) {
             //Ajout d'une row pour ground
             TableRow tableRowGround = new TableRow(this);
             //Ajout d'une row pour element
             TableRow tableRowElement = new TableRow(this);
-            for (int j = 0; j < map[i].length(); j++) {
-                if (map[i].length() > maxLengthX) {
-                    maxLengthX = map[i].length();
+            String [] mapColumn = mapLine[i].split("x");
+
+            for (int j = 0; j < mapColumn.length; j++) {
+                if (mapColumn.length > maxLengthX) {
+                    maxLengthX = mapColumn.length;
                 }
                 //Creation image view pour ground
                 final ImageView imageViewGround = new ImageView(this);
                 imageViewGround.setLayoutParams(params);
-                imageViewGround.setBackground(switchTile(Integer.parseInt(map[i].substring(j, j + 1))));
+                imageViewGround.setBackground(switchTile(Integer.parseInt(mapColumn[i])));
                 tableRowGround.addView(imageViewGround);
                 //Creation image view pour ground
                 final ImageView imageViewElement = new ImageView(this);
                 imageViewElement.setLayoutParams(params);
-//                imageViewElement.setBackground(dTransparent);
                 tableRowElement.addView(imageViewElement);
                 //click on element tile
                 imageViewElement.setOnTouchListener(new View.OnTouchListener() {

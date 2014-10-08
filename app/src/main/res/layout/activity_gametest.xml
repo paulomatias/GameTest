@@ -7,21 +7,18 @@
     <com.excilys.myapplication.VScroll
         android:id="@+id/vs_gameBoard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_red_light">
+        android:layout_height="match_parent">
 
         <com.excilys.myapplication.HScroll
             android:id="@+id/hs_gameBoard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_bright">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/rl_boardContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@android:color/holo_green_light">
+                android:layout_gravity="center">
 
                 <TableLayout
                     android:id="@+id/tl_gameBoardGround"
