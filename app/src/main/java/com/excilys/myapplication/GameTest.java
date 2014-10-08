@@ -5,15 +5,14 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import helper.StringHelper;
 
@@ -27,7 +26,7 @@ public class GameTest extends Activity {
     private HScroll hScroll;
     private VScroll vScroll;
     private float scaleFactor = 1.0f;
-    private TextView currentTextView;
+    private ImageView currentImageView;
     private int maxLengthX = 0;
     private int maxLengthY = 0;
     private Resources resources;
@@ -72,26 +71,24 @@ public class GameTest extends Activity {
                 if (map[i].length() > maxLengthX) {
                     maxLengthX = map[i].length();
                 }
-                final TextView textView = new TextView(this);
-                textView.setLayoutParams(params);
-                textView.setText("");
-                textView.setGravity(Gravity.CENTER);
-                textView.setBackground(drawable);
-                textView.setBackground(switchTile(Integer.parseInt(map[i].substring(j, j + 1))));
+                final ImageView imageView = new ImageView(this);
+                imageView.setLayoutParams(params);
+                imageView.setBackground(drawable);
+                imageView.setBackground(switchTile(Integer.parseInt(map[i].substring(j, j + 1))));
 
-                textView.setOnTouchListener(new View.OnTouchListener() {
+                imageView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             mx = event.getRawX();
                             my = event.getRawY();
-                            currentTextView = textView;
+                            currentImageView = imageView;
                             return true;
                         }
                         return false;
                     }
                 });
-                tableRow.addView(textView);
+                tableRow.addView(imageView);
             }
             tlGameBoard.addView(tableRow);
             rlGameBoard.setBackground(resources.getDrawable(R.drawable.grass_background));
@@ -106,10 +103,10 @@ public class GameTest extends Activity {
         float offsetLeft;
         if (maxLengthX >= maxLengthY) {
             offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 4);
-            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 2);
+            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 4);
         } else {
-            offsetTop = (float) (Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 4);
-            offsetLeft = (float) (Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 2);
+            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY + maxLengthX) - maxLengthX * tileSize / 4);
+            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY - maxLengthX) + maxLengthY * tileSize / 4);
         }
 
         int heightScroll = (int) (maxLengthY * tileSize + offsetTop * 2);
@@ -122,7 +119,6 @@ public class GameTest extends Activity {
         vScroll.setMinimumWidth(widthScroll);
 
         FrameLayout.LayoutParams vParams = new VScroll.LayoutParams(widthScroll, heightScroll);
-        vParams.gravity = Gravity.CENTER;
         hScroll.setLayoutParams(vParams);
 
         tlGameBoard.setTranslationX(offsetLeft);
@@ -160,11 +156,11 @@ public class GameTest extends Activity {
                     if (!isZoomed) {
                         curX = event.getX();
                         curY = event.getY();
-                        if (!moved && currentTextView != null) {
+                        if (!moved && currentImageView != null) {
                             //Traitement lors du click sur une case
-                            currentTextView.setBackgroundColor(Color.BLUE);
+                            currentImageView.setBackgroundColor(Color.BLUE);
                         } else {
-                            currentTextView = null;
+                            currentImageView = null;
                             vScroll.scrollBy((int) (mx - curX), (int) (my - curY));
                             hScroll.scrollBy((int) (mx - curX), (int) (my - curY));
                         }
@@ -197,7 +193,8 @@ public class GameTest extends Activity {
         }
         return null;
     }
-
+            if (scaleFactor > 0.5F && scaleFactor < 1.0F && detector.isInProgress()) {
+            }
     private class ScaleListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
         float x;
@@ -210,27 +207,13 @@ public class GameTest extends Activity {
             return true;
         }
 
+        //TODO ZOOM
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
             isZoomed = true;
             // don't let the object get too small or too large.
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 1.0f));
-            if (scaleFactor > 0.5F && scaleFactor < 1.0F && detector.isInProgress()) {
-
-
-                //Zoom
-
-//                DisplayMetrics metrics = new DisplayMetrics();
-//                getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//                int[] loc = new int[2];
-//                Log.i("paulo", "ZOOM!!");
-//                hexagonBoard.getLocationInWindow(loc);
-//                hexagonBoard.setPivotX((x * (detector.getCurrentSpanX() / detector.getPreviousSpanX()) - loc[0]) / scaleFactor);
-//                hexagonBoard.setPivotY((y * (detector.getCurrentSpanY() / detector.getPreviousSpanY()) - loc[1]) / scaleFactor);
-//                hexagonBoard.setScaleX(scaleFactor);
-//                hexagonBoard.setScaleY(scaleFactor);
-            }
             return true;
         }
     }
