@@ -2,9 +2,10 @@ package com.excilys.myapplication;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import java.util.List;
 
 import helper.StringHelper;
 
@@ -30,6 +33,7 @@ public class GameTest extends Activity {
     private RelativeLayout rlBoardContainer;
     private RelativeLayout rlGameBoard;
     private float scaleFactor = 1.0f;
+    private List<Bitmap> bitmaps;
     private ImageView currentImageView;
     private int maxLengthX = 0;
     private int maxLengthY = 0;
@@ -49,10 +53,11 @@ public class GameTest extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gametest);
 
+        //découpage de la tile map
+        cutBitmap();
+
+
         resources = getResources();
-        // Exemple de récupération de bitmap crop
-        // bitmapsFromTiles = createBitmaps();
-        // dTransparent = new BitmapDrawable(resources, bitmapsFromTiles.get(0));
         dTransparent = resources.getDrawable(R.drawable.transparent);
         dGrass = resources.getDrawable(R.drawable.grass);
         dStone = resources.getDrawable(R.drawable.stone);
@@ -91,7 +96,6 @@ public class GameTest extends Activity {
                 //Creation image view pour ground
                 final ImageView imageViewGround = new ImageView(this);
                 imageViewGround.setLayoutParams(params);
-                Log.i("truc", "" + mapColumn[j]);
                 imageViewGround.setBackground(switchTile(Integer.parseInt(mapColumn[j])));
                 tableRowGround.addView(imageViewGround);
                 //Creation image view pour ground
@@ -114,6 +118,15 @@ public class GameTest extends Activity {
 
         // Initialisation et positionnement du GameBoard
         initGameBoardPosition(tlGameBoardGround, tlGameBoardElement);
+    }
+
+    /**
+     * Découpe le tileset et stock les images dans bitmaps
+     */
+    private void cutBitmap() {
+        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
+        BitmapHelper bitmapHelper = new BitmapHelper();
+        bitmaps = bitmapHelper.createBitmaps(bMap);
     }
 
     private void initGameBoardPosition(TableLayout tlGameBoardGround, TableLayout tlGameBoardElement) {
@@ -151,9 +164,7 @@ public class GameTest extends Activity {
         tlGameBoardElement.setRotationX(20);
 
 //
-//        Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
-//        BitmapHelper bitmapHelper = new BitmapHelper();
-//        List<Bitmap> bitmaps = bitmapHelper.createBitmaps(bMap);
+
 //        ImageView imageView =new ImageView(this);
 //        imageView.setMinimumHeight(128);
 //        imageView.setMinimumWidth(128);

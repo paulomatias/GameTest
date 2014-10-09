@@ -7,15 +7,18 @@ import java.util.ArrayList;
 public class BitmapHelper {
 
     ArrayList<Bitmap> createBitmaps(Bitmap bMap) {
-
-        ArrayList<Bitmap> bitmapsArray = new ArrayList<Bitmap>();
-
-        Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, 864, 705, true);
-
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 0, 16, 16));
-        bitmapsArray.add(Bitmap.createBitmap(bMapScaled, 0, 16, 16, 16));
-
-        return bitmapsArray;
+        ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
+        int bMapWidth = bMap.getWidth();
+        int bMapHeight = bMap.getHeight();
+        int tileSize = 16;
+        int tileSpace = 1;
+        Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, bMapWidth, bMapHeight, true);
+        for (int x = 0; x < bMapWidth; x += tileSize + tileSpace) {
+            for (int y = 0; y < bMapHeight; y += tileSize + tileSpace) {
+                bitmapList.add(Bitmap.createBitmap(bMapScaled, x, y, tileSize, tileSize));
+            }
+        }
+        return bitmapList;
     }
 
 }
