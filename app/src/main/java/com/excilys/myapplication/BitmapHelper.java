@@ -13,8 +13,8 @@ public class BitmapHelper {
         int tileSize = 16;
         int tileSpace = 1;
         Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, bMapWidth, bMapHeight, true);
-        for (int x = 0; x < bMapWidth; x += tileSize + tileSpace) {
-            for (int y = 0; y < bMapHeight; y += tileSize + tileSpace) {
+        for (int y = 0; y < bMapHeight; y += tileSize + tileSpace) {
+            for (int x = 0; x < bMapWidth; x += tileSize + tileSpace) {
                 bitmapList.add(Bitmap.createBitmap(bMapScaled, x, y, tileSize, tileSize));
             }
         }

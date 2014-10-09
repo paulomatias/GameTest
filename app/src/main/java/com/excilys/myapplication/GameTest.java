@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -22,7 +24,7 @@ import helper.StringHelper;
 public class GameTest extends Activity {
 
     private ScaleGestureDetector scaleGestureDetector;
-    private int tileSize = 64;
+    private int tileSize = 32;
     private float mx, my;
     private boolean moved = false;
     private boolean isZoomed = false;
@@ -43,10 +45,20 @@ public class GameTest extends Activity {
     //private ArrayList<Bitmap> bitmapsFromTiles;
     private Drawable dTransparent;
     private Drawable dGrass;
-    private Drawable dStone;
     private Drawable dWater;
     private Drawable dRock;
+    private Drawable dBush;
+    private Drawable dBoardLeft;
+    private Drawable dBoardRight;
+    private Drawable dBoardBottomLeftCorner;
+    private Drawable dBoardRightCorner;
+    private Drawable dBoardBottom;
+    private Drawable dBoardTop;
+    private Drawable dBoardTopLeftCorner;
+    private Drawable dWaterRight;
+    private Drawable dWaterLeft;
     private Drawable dCaracter;
+    private Drawable dBoardTopRightCorner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +68,29 @@ public class GameTest extends Activity {
         //découpage de la tile map
         cutBitmap();
 
+        //Creation des drawable en fonction
 
+        Matrix matrixLeft = new Matrix();
+        matrixLeft.postRotate(-90);
+        Matrix matrixRight = new Matrix();
+        matrixRight.postRotate(90);
         resources = getResources();
-        dTransparent = resources.getDrawable(R.drawable.transparent);
-        dGrass = resources.getDrawable(R.drawable.grass);
-        dStone = resources.getDrawable(R.drawable.stone);
-        dWater = resources.getDrawable(R.drawable.water);
-        dRock = resources.getDrawable(R.drawable.rock);
+        dGrass = new BitmapDrawable(resources, bitmaps.get(156));
+        dBush = new BitmapDrawable(resources, bitmaps.get(157));
+        dWater = new BitmapDrawable(resources, bitmaps.get(139));
+        dWaterLeft = new BitmapDrawable(resources, bitmaps.get(138));
+        dWaterRight = new BitmapDrawable(resources, bitmaps.get(140));
+        dRock = new BitmapDrawable(resources, bitmaps.get(104));
+        dBoardLeft = new BitmapDrawable(resources, bitmaps.get(527));
+        dBoardTop = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(527), 0, 0, bitmaps.get(527).getWidth(), bitmaps.get(527).getHeight(), matrixRight, true));
+        dBoardBottom = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(527), 0, 0, bitmaps.get(527).getWidth(), bitmaps.get(527).getHeight(), matrixLeft, true));
+        dBoardRight = new BitmapDrawable(resources, bitmaps.get(528));
+        dBoardBottomLeftCorner = new BitmapDrawable(resources, bitmaps.get(588));
+        dBoardTopLeftCorner = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(588), 0, 0, bitmaps.get(588).getWidth(), bitmaps.get(588).getHeight(), matrixRight, true));
+        dBoardTopRightCorner = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(589), 0, 0, bitmaps.get(589).getWidth(), bitmaps.get(589).getHeight(), matrixLeft, true));
+        dBoardRightCorner = new BitmapDrawable(resources, bitmaps.get(589));
         dCaracter = resources.getDrawable(R.drawable.caracter);
+        dTransparent = resources.getDrawable(R.drawable.transparent);
 
         //Découpage des Tilemap
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
@@ -162,16 +189,6 @@ public class GameTest extends Activity {
         tlGameBoardElement.setTranslationY(offsetTop);
         tlGameBoardElement.setRotation(45);
         tlGameBoardElement.setRotationX(20);
-
-//
-
-//        ImageView imageView =new ImageView(this);
-//        imageView.setMinimumHeight(128);
-//        imageView.setMinimumWidth(128);
-//        imageView.setImageBitmap(bitmaps.get(0));
-//
-//        rlGameBoard.addView(imageView);
-
     }
 
     @Override
@@ -232,9 +249,29 @@ public class GameTest extends Activity {
             case 2:
                 return dRock;
             case 3:
-                return dStone;
-            case 4:
                 return dWater;
+            case 4:
+                return dBush;
+            case 5:
+                return dBoardLeft;
+            case 6:
+                return dBoardRightCorner;
+            case 7:
+                return dBoardBottomLeftCorner;
+            case 8:
+                return dBoardBottom;
+            case 9:
+                return dBoardRight;
+            case 10:
+                return dBoardTop;
+            case 11:
+                return dBoardTopLeftCorner;
+            case 12:
+                return dBoardTopRightCorner;
+            case 13:
+                return dWaterRight;
+            case 14:
+                return dWaterLeft;
             default:
                 break;
         }
