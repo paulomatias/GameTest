@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import static com.excilys.myapplication.BitmapHelper.superCalcul;
 
 import java.util.List;
 
@@ -44,26 +41,8 @@ public class GameTest extends Activity {
     private Resources resources;
 
     // Drawable pour la map
-    //private ArrayList<Bitmap> bitmapsFromTiles;
     private Drawable dTransparent;
-    private Drawable dGrass;
-    private Drawable dWater;
-    private Drawable dRock;
-    private Drawable dBush;
-    private Drawable dBoardLeft;
-    private Drawable dBoardRight;
-    private Drawable dBoardBottomLeftCorner;
-    private Drawable dBoardRightCorner;
-    private Drawable dBoardBottom;
-    private Drawable dBoardTop;
-    private Drawable dBoardTopLeftCorner;
-    private Drawable dWaterRight;
-    private Drawable dWaterLeft;
     private Drawable dCaracter;
-    private Drawable dBoardTopRightCorner;
-    private Drawable dRiverStartLeft;
-    private Drawable dRiverStartRight;
-    private Drawable dRiverEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,36 +51,13 @@ public class GameTest extends Activity {
 
         //découpage de la tile map
         cutBitmap();
-
-        //Creation des drawable en fonction
-
-        Matrix matrixLeft = new Matrix();
-        matrixLeft.postRotate(-90);
-        Matrix matrixRight = new Matrix();
-        matrixRight.postRotate(90);
         resources = getResources();
-        dGrass = new BitmapDrawable(resources, bitmaps.get(156));
-        dBush = new BitmapDrawable(resources, bitmaps.get(157));
-        dWater = new BitmapDrawable(resources, bitmaps.get(139));
-        dWaterLeft = new BitmapDrawable(resources, bitmaps.get(138));
-        dWaterRight = new BitmapDrawable(resources, bitmaps.get(140));
-        dRock = new BitmapDrawable(resources, bitmaps.get(104));
-        dBoardLeft = new BitmapDrawable(resources, bitmaps.get(527));
-        dBoardTop = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(527), 0, 0, bitmaps.get(527).getWidth(), bitmaps.get(527).getHeight(), matrixRight, true));
-        dBoardBottom = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(527), 0, 0, bitmaps.get(527).getWidth(), bitmaps.get(527).getHeight(), matrixLeft, true));
-        dBoardRight = new BitmapDrawable(resources, bitmaps.get(528));
-        dBoardBottomLeftCorner = new BitmapDrawable(resources, bitmaps.get(588));
-        dBoardTopLeftCorner = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(588), 0, 0, bitmaps.get(588).getWidth(), bitmaps.get(588).getHeight(), matrixRight, true));
-        dBoardTopRightCorner = new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(589), 0, 0, bitmaps.get(589).getWidth(), bitmaps.get(589).getHeight(), matrixLeft, true));
-        dBoardRightCorner = new BitmapDrawable(resources, bitmaps.get(589));
-        dCaracter = resources.getDrawable(R.drawable.caracter);
-        dTransparent = resources.getDrawable(R.drawable.transparent);
-        dRiverStartLeft = new BitmapDrawable(resources, bitmaps.get(superCalcul(10,13)));
-        dRiverStartRight = new BitmapDrawable(resources, bitmaps.get(superCalcul(11,13)));
 
         //Découpage des Tilemap
-        String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
-        String[] mapLine = mapString.split("\\+");
+        String mapBackground1 = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
+        String mapImage1 = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap02));
+        String[] mapLine1 = mapBackground1.split("\\+");
+        String[] mapLine2 = mapImage1.split("\\+");
 
         tlGameBoardGround = (TableLayout) findViewById(R.id.tl_gameBoardGround);
         tlGameBoardElement = (TableLayout) findViewById(R.id.tl_gameBoardElement);
@@ -109,48 +65,82 @@ public class GameTest extends Activity {
         hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
         vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
         rlBoardContainer = (RelativeLayout) findViewById(R.id.rl_boardContainer);
+        dCaracter = resources.getDrawable(R.drawable.caracter);
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
-        maxLengthY = mapLine.length;
+        setMap(mapLine1, mapLine2, params, 1);
+        rlGameBoard.setBackground(resources.getDrawable(R.drawable.grass_background));
+    }
+
+    //Création de la map
+    public void setMap(String[] mapBackground, String[] mapImage, TableRow.LayoutParams params, int layer) {
+
+
+        maxLengthY = mapBackground.length;
 
         // Population du tableau représentant la carte
-        for (int i = 0; i < mapLine.length; i++) {
+        for (int i = 0; i < maxLengthY; i++) {
             //Ajout d'une row pour ground
             TableRow tableRowGround = new TableRow(this);
             //Ajout d'une row pour element
             TableRow tableRowElement = new TableRow(this);
-            String[] mapColumn = mapLine[i].split("x");
+            String[] mapColumn1 = mapBackground[i].split("x");
+            String[] mapColumn2 = mapImage[i].split("x");
 
-            for (int j = 0; j < mapColumn.length; j++) {
-                if (mapColumn.length > maxLengthX) {
-                    maxLengthX = mapColumn.length;
+            for (int j = 0; j < mapColumn1.length; j++) {
+                if (mapColumn1.length > maxLengthX) {
+                    maxLengthX = mapColumn1.length;
                 }
                 //Creation image view pour ground
                 final ImageView imageViewGround = new ImageView(this);
                 imageViewGround.setLayoutParams(params);
-                imageViewGround.setBackground(switchTile(Integer.parseInt(mapColumn[j])));
+                String[] tileRotation1 = mapColumn1[j].split(":");
+                String[] tileRotation2 = mapColumn2[j].split(":");
+
+                if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 1) {
+                    imageViewGround.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
+                } else if (mapColumn1[j] != "" && !mapColumn1[j].equals("0") && layer == 1) {
+                    imageViewGround.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
+                }
+                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 1) {
+                    imageViewGround.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
+                } else if (mapColumn2[j] != "" && !mapColumn2[j].equals("0") && layer == 1) {
+                    imageViewGround.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
+                }
                 tableRowGround.addView(imageViewGround);
-                //Creation image view pour ground
+
+
+                //Creation image view pour Element
                 final ImageView imageViewElement = new ImageView(this);
                 imageViewElement.setLayoutParams(params);
+                if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 1) {
+                    imageViewElement.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
+                } else if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && layer == 1) {
+                    imageViewElement.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
+                }
+                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 1) {
+                    imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
+                } else if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && layer == 1) {
+                    imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
+                }
                 tableRowElement.addView(imageViewElement);
+
                 //click on element tile
                 imageViewElement.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        currentImageView = imageViewElement;
+                        if (imageViewElement.getDrawable() == null) {
+                            imageViewElement.setImageDrawable(dCaracter);
+                        }
                         return false;
                     }
                 });
             }
             tlGameBoardGround.addView(tableRowGround);
             tlGameBoardElement.addView(tableRowElement);
-            rlGameBoard.setBackground(resources.getDrawable(R.drawable.grass_background));
-        }
 
-        // Initialisation et positionnement du GameBoard
-        initGameBoardPosition(tlGameBoardGround, tlGameBoardElement);
+        }
     }
 
     /**
@@ -159,42 +149,7 @@ public class GameTest extends Activity {
     private void cutBitmap() {
         Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
         BitmapHelper bitmapHelper = new BitmapHelper();
-        bitmaps = bitmapHelper.createBitmaps(bMap);
-    }
-
-    private void initGameBoardPosition(TableLayout tlGameBoardGround, TableLayout tlGameBoardElement) {
-        float offsetTop;
-        float offsetLeft;
-        if (maxLengthX >= maxLengthY) {
-            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX + maxLengthY) - maxLengthY * tileSize / 2);
-            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthX - maxLengthY) + maxLengthX * tileSize / 8);
-        } else {
-            offsetTop = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY + maxLengthX) - maxLengthX * tileSize / 2);
-            offsetLeft = (float) -(Math.sqrt(2) / 4 * tileSize * (-maxLengthY - maxLengthX) + maxLengthY * tileSize / 8);
-        }
-
-        int heightScroll = (int) (maxLengthY * tileSize + offsetTop * 2);
-        int widthScroll = (int) (maxLengthX * tileSize + offsetLeft * 2);
-
-        rlBoardContainer.setMinimumHeight(heightScroll);
-        hScroll.setMinimumHeight(heightScroll);
-        vScroll.setMinimumHeight(heightScroll);
-
-        rlBoardContainer.setMinimumWidth(widthScroll);
-        hScroll.setMinimumWidth(widthScroll);
-        vScroll.setMinimumWidth(widthScroll);
-
-        FrameLayout.LayoutParams vParams = new VScroll.LayoutParams(widthScroll, heightScroll);
-        hScroll.setLayoutParams(vParams);
-
-        tlGameBoardGround.setTranslationX(offsetLeft);
-        tlGameBoardGround.setTranslationY(offsetTop);
-        tlGameBoardGround.setRotation(45);
-        tlGameBoardGround.setRotationX(20);
-        tlGameBoardElement.setTranslationX(offsetLeft);
-        tlGameBoardElement.setTranslationY(offsetTop);
-        tlGameBoardElement.setRotation(45);
-        tlGameBoardElement.setRotationX(20);
+        bitmaps = bitmapHelper.createBitmaps(bMap, 16, 1);
     }
 
     @Override
@@ -245,49 +200,11 @@ public class GameTest extends Activity {
         return false;
     }
 
-    private Drawable switchTile(int tileNumber) {
+    private Drawable getDrawableTile(int tileNumber, int tileRotation) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(tileRotation);
 
-        switch (tileNumber) {
-            case 0:
-                return dTransparent;
-            case 1:
-                return dGrass;
-            case 2:
-                return dRock;
-            case 3:
-                return dWater;
-            case 4:
-                return dBush;
-            case 5:
-                return dBoardLeft;
-            case 6:
-                return dBoardRightCorner;
-            case 7:
-                return dBoardBottomLeftCorner;
-            case 8:
-                return dBoardBottom;
-            case 9:
-                return dBoardRight;
-            case 10:
-                return dBoardTop;
-            case 11:
-                return dBoardTopLeftCorner;
-            case 12:
-                return dBoardTopRightCorner;
-            case 13:
-                return dWaterRight;
-            case 14:
-                return dWaterLeft;
-            case 15:
-                return dRiverStartLeft;
-            case 16:
-                return dRiverStartRight;
-            case 17:
-                return dRiverEnd;
-            default:
-                break;
-        }
-        return null;
+        return new BitmapDrawable(resources, Bitmap.createBitmap(bitmaps.get(tileNumber), 0, 0, bitmaps.get(tileNumber).getWidth(), bitmaps.get(tileNumber).getHeight(), matrix, true));
     }
 
 
