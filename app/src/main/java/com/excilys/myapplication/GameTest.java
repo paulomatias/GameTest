@@ -102,7 +102,6 @@ public class GameTest extends Activity {
         hScroll = (HScroll) findViewById(R.id.hs_gameBoard);
         vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
         rlBoardContainer = (RelativeLayout) findViewById(R.id.rl_boardContainer);
-        Drawable drawable = getResources().getDrawable(R.drawable.textview_border);
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
