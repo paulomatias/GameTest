@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import static com.excilys.myapplication.BitmapHelper.superCalcul;
+
 import java.util.List;
 
 import helper.StringHelper;
@@ -59,6 +61,9 @@ public class GameTest extends Activity {
     private Drawable dWaterLeft;
     private Drawable dCaracter;
     private Drawable dBoardTopRightCorner;
+    private Drawable dRiverStartLeft;
+    private Drawable dRiverStartRight;
+    private Drawable dRiverEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,8 @@ public class GameTest extends Activity {
         dBoardRightCorner = new BitmapDrawable(resources, bitmaps.get(589));
         dCaracter = resources.getDrawable(R.drawable.caracter);
         dTransparent = resources.getDrawable(R.drawable.transparent);
+        dRiverStartLeft = new BitmapDrawable(resources, bitmaps.get(superCalcul(10,13)));
+        dRiverStartRight = new BitmapDrawable(resources, bitmaps.get(superCalcul(11,13)));
 
         //Découpage des Tilemap
         String mapString = StringHelper.convertStreamToString(getResources().openRawResource(R.raw.tilemap01));
@@ -271,6 +278,12 @@ public class GameTest extends Activity {
                 return dWaterRight;
             case 14:
                 return dWaterLeft;
+            case 15:
+                return dRiverStartLeft;
+            case 16:
+                return dRiverStartRight;
+            case 17:
+                return dRiverEnd;
             default:
                 break;
         }
