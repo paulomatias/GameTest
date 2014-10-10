@@ -21,4 +21,13 @@ public class BitmapHelper {
         return bitmapList;
     }
 
+    public static int superCalcul(int x, int y){
+        int a;
+        if (y>1){
+            a= (y-1)*61+x-1;
+        }else{
+            a =x-1;
+        }
+        return a;
+    }
 }
