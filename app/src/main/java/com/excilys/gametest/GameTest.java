@@ -45,7 +45,6 @@ public class GameTest extends Activity {
     private Resources resources;
 
     // Drawable pour la map
-    private Drawable dTransparent;
     private Drawable dCaracter;
 
     @Override
@@ -79,8 +78,6 @@ public class GameTest extends Activity {
 
     //Création de la map
     public void setMap(String[] mapBackground, String[] mapImage, TableRow.LayoutParams params, int layer) {
-
-
         maxLengthY = mapBackground.length;
 
         // Population du tableau représentant la carte
@@ -119,12 +116,12 @@ public class GameTest extends Activity {
                 imageViewElement.setLayoutParams(params);
                 if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 2) {
                     imageViewElement.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
-                } else if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && layer == 1) {
+                } else if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && layer == 2) {
                     imageViewElement.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
                 }
                 if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 2) {
                     imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
-                } else if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && layer == 1) {
+                } else if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && layer == 2) {
                     imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
                 }
                 tableRowElement.addView(imageViewElement);
