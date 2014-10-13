@@ -1,8 +1,21 @@
 apply plugin: 'com.android.application'
 
+
+// setup build script for androidannotation according to Jayway tutorial for android studio setup
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2+'
+    }
+}
+//apt plugin for andoridannotation
+apply plugin: 'android-apt'
+
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:19'
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 17
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         applicationId "com.excilys.myapplication"
@@ -21,4 +34,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    apt "org.androidannotations:androidannotations:3.0+"
+    compile 'org.androidannotations:androidannotations-api:3.0.+'
 }

@@ -26,6 +26,9 @@ import java.util.List;
 import com.excilys.gametest.helper.BitmapHelper;
 import com.excilys.gametest.helper.StringHelper;
 
+import org.androidannotations.annotations.EActivity;
+
+@EActivity
 public class GameTest extends Activity {
 
     private ScaleGestureDetector scaleGestureDetector;
