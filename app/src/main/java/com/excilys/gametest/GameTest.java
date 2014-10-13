@@ -26,8 +26,10 @@ import java.util.List;
 import com.excilys.gametest.helper.BitmapHelper;
 import com.excilys.gametest.helper.StringHelper;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
+@EActivity
 public class GameTest extends Activity {
 
     private ScaleGestureDetector scaleGestureDetector;
@@ -50,7 +52,8 @@ public class GameTest extends Activity {
 
     // Drawable pour la map
     private Drawable dCaracter;
-    private Tile character;
+    @Bean
+    protected Tile character;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

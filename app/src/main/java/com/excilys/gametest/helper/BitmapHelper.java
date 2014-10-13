@@ -1,11 +1,9 @@
 package com.excilys.gametest.helper;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 

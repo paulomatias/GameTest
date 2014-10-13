@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.ImageView;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
@@ -20,34 +21,23 @@ public class Tile extends ImageView {
         super(context);
     }
 
-//    public Tile(Context context, int collide) {
-//        super(context);
-//        this.collide = collide;
-//    }
-//
-//    public Tile(Context context, int collide, List<Drawable> charSet) {
-//        super(context);
-//        this.collide = collide;
-//        this.charSet = charSet;
-//    }
-
     @UiThread
     public void setImage(int chiffre) {
         this.setImageDrawable(charSet.get(chiffre));
     }
 
-    //TODO animate the tile
-    public void animateTile(){
-        Log.d(this.getClass().getSimpleName(), "In method animate tiles : "+charSet.size());
-        if (charSet.size() > 0 ){
+    @Background
+    public void animateTile() {
+        if (charSet.size() > 0) {
             CountDownTimer timer = new CountDownTimer(10000, 500) {
                 int chiffre = 0;
+
                 @Override
                 public void onTick(long millisUntilFinished) {
                     chiffre++;
-                    if(chiffre < charSet.size())
+                    if (chiffre < charSet.size())
                         setImage(chiffre);
-                    else{
+                    else {
                         chiffre = 0;
                         setImage(0);
                     }

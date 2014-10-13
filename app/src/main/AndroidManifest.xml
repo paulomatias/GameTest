@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="false">
         <activity
-            android:name="com.excilys.gametest.GameTest"
+            android:name="com.excilys.gametest.GameTest_"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
             <intent-filter>
