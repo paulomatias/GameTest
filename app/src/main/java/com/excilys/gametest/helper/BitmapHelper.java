@@ -1,4 +1,4 @@
-package com.excilys.myapplication;
+package com.excilys.gametest.helper;
 
 import android.graphics.Bitmap;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class BitmapHelper {
 
-    ArrayList<Bitmap> createBitmaps(Bitmap bMap, int tileSize, int tileSpace) {
+    public static ArrayList<Bitmap> createBitmaps(Bitmap bMap, int tileSize, int tileSpace) {
         ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
         int bMapWidth = bMap.getWidth();
         int bMapHeight = bMap.getHeight();

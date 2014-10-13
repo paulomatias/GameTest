@@ -1,25 +1,25 @@
-package com.excilys.myapplication;
+package com.excilys.gametest.views;
+
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 
-public class HScroll extends HorizontalScrollView {
+public class VScroll extends ScrollView {
 
-    public HScroll(Context context, AttributeSet attrs, int defStyle) {
+    public VScroll(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public HScroll(Context context, AttributeSet attrs) {
+
+    public VScroll(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HScroll(Context context) {
+    public VScroll(Context context) {
         super(context);
     }
-
-
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {

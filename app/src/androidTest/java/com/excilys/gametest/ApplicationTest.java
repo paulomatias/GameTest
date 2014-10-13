@@ -1,4 +1,4 @@
-package com.excilys.myapplication;
+package com.excilys.gametest;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

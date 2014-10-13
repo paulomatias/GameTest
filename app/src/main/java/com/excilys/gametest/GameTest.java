@@ -1,4 +1,4 @@
-package com.excilys.myapplication;
+package com.excilys.gametest;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -16,9 +16,13 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import com.excilys.gametest.views.HScroll;
+import com.excilys.gametest.views.VScroll;
+
 import java.util.List;
 
-import helper.StringHelper;
+import com.excilys.gametest.helper.BitmapHelper;
+import com.excilys.gametest.helper.StringHelper;
 
 public class GameTest extends Activity {
 
@@ -110,16 +114,15 @@ public class GameTest extends Activity {
                 }
                 tableRowGround.addView(imageViewGround);
 
-
                 //Creation image view pour Element
                 final ImageView imageViewElement = new ImageView(this);
                 imageViewElement.setLayoutParams(params);
-                if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 1) {
+                if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 2) {
                     imageViewElement.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
                 } else if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && layer == 1) {
                     imageViewElement.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
                 }
-                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 1) {
+                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 2) {
                     imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
                 } else if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && layer == 1) {
                     imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
@@ -149,7 +152,7 @@ public class GameTest extends Activity {
     private void cutBitmap() {
         Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
         BitmapHelper bitmapHelper = new BitmapHelper();
-        bitmaps = bitmapHelper.createBitmaps(bMap, 16, 1);
+        bitmaps = BitmapHelper.createBitmaps(bMap, 16, 1);
     }
 
     @Override

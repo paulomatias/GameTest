@@ -1,4 +1,4 @@
-package helper;
+package com.excilys.gametest.helper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
