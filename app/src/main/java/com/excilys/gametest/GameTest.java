@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TableRow;
 
 import com.excilys.gametest.views.HScroll;
 import com.excilys.gametest.views.VScroll;
+import com.excilys.gametest.tile.Tile;
 
 import java.util.List;
 
@@ -46,6 +48,7 @@ public class GameTest extends Activity {
 
     // Drawable pour la map
     private Drawable dCaracter;
+    private Tile character;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class GameTest extends Activity {
         vScroll = (VScroll) findViewById(R.id.vs_gameBoard);
         rlBoardContainer = (RelativeLayout) findViewById(R.id.rl_boardContainer);
         dCaracter = resources.getDrawable(R.drawable.caracter);
+        character = new Tile(this);
+        character.setCharSet(BitmapHelper.createBitmapDrawable(resources, BitmapHelper.createBitmaps(BitmapFactory.decodeResource(getResources(), R.drawable.character01), 64, 0)));
 
         scaleGestureDetector = new ScaleGestureDetector(getApplicationContext(), new ScaleListener());
         TableRow.LayoutParams params = new TableRow.LayoutParams(tileSize, tileSize);
@@ -94,44 +99,52 @@ public class GameTest extends Activity {
                     maxLengthX = mapColumn1.length;
                 }
                 //Creation image view pour ground
-                final ImageView imageViewGround = new ImageView(this);
-                imageViewGround.setLayoutParams(params);
+                final ImageView tileGround = new ImageView(this);
+                tileGround.setLayoutParams(params);
+                //Creation image view pour Element
+                final Tile tileElement = new Tile(this);
+                tileElement.setLayoutParams(params);
+                //Récupération des maps
                 String[] tileRotation1 = mapColumn1[j].split(":");
                 String[] tileRotation2 = mapColumn2[j].split(":");
 
+                // Application des maps de 'fond'
                 if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 1) {
-                    imageViewGround.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
+                    tileGround.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
                 } else if (mapColumn1[j] != "" && !mapColumn1[j].equals("0") && layer == 1) {
-                    imageViewGround.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
+                    tileGround.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
                 }
-                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 1) {
-                    imageViewGround.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
-                } else if (mapColumn2[j] != "" && !mapColumn2[j].equals("0") && layer == 1) {
-                    imageViewGround.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
-                }
-                tableRowGround.addView(imageViewGround);
 
-                //Creation image view pour Element
-                final ImageView imageViewElement = new ImageView(this);
-                imageViewElement.setLayoutParams(params);
+                if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 1) {
+                    tileGround.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
+                    tileElement.setCollide(1);
+                } else if (mapColumn2[j] != "" && !mapColumn2[j].equals("0") && layer == 1) {
+                    tileGround.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
+                    tileElement.setCollide(1);
+                }
+                tableRowGround.addView(tileGround);
+
+                // Application des maps 'éléments' (personnages et gestion des colisions)
                 if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && tileRotation1.length > 1 && layer == 2) {
-                    imageViewElement.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
+                    tileElement.setBackground(getDrawableTile(Integer.parseInt(tileRotation1[0]), Integer.parseInt(tileRotation1[1])));
                 } else if (!mapColumn1[j].equals("") && !mapColumn1[j].equals("0") && layer == 2) {
-                    imageViewElement.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
+                    tileElement.setBackground(getDrawableTile(Integer.parseInt(mapColumn1[j]), 0));
                 }
                 if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && tileRotation2.length > 1 && layer == 2) {
-                    imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
+                    tileElement.setImageDrawable(getDrawableTile(Integer.parseInt(tileRotation2[0]), Integer.parseInt(tileRotation2[1])));
                 } else if (!mapColumn2[j].equals("") && !mapColumn2[j].equals("0") && layer == 2) {
-                    imageViewElement.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
+                    tileElement.setImageDrawable(getDrawableTile(Integer.parseInt(mapColumn2[j]), 0));
                 }
-                tableRowElement.addView(imageViewElement);
+
+                tableRowElement.addView(tileElement);
 
                 //click on element tile
-                imageViewElement.setOnTouchListener(new View.OnTouchListener() {
+                tileElement.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        if (imageViewElement.getDrawable() == null) {
-                            imageViewElement.setImageDrawable(dCaracter);
+                        if (tileElement.getCollide() == 0) {
+                            tileElement.setCharSet(character.getCharSet());
+                            tileElement.setImageDrawable(tileElement.getCharSet().get(1));
                         }
                         return false;
                     }
@@ -148,7 +161,6 @@ public class GameTest extends Activity {
      */
     private void cutBitmap() {
         Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.tilesetdemo);
-        BitmapHelper bitmapHelper = new BitmapHelper();
         bitmaps = BitmapHelper.createBitmaps(bMap, 16, 1);
     }
 

@@ -1,6 +1,11 @@
 package com.excilys.gametest.helper;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -17,6 +22,15 @@ public class BitmapHelper {
             }
         }
         return bitmapList;
+    }
+
+    public static ArrayList<Drawable> createBitmapDrawable(Resources resources, ArrayList<Bitmap> bitmapArray) {
+        ArrayList<Drawable> drawableList = new ArrayList<Drawable>();
+        for (Bitmap bitmap : bitmapArray) {
+            BitmapDrawable bmDrawable = new BitmapDrawable(resources, bitmap);
+            drawableList.add(bmDrawable);
+        }
+        return drawableList;
     }
 
     // Avec x et y nécessairement supérieur à 1
