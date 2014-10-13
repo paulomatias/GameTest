@@ -23,24 +23,22 @@ public class Tile extends ImageView {
 
     @UiThread
     public void setImage(int chiffre) {
+        Log.d(this.getClass().getSimpleName(), "Dans set image");
         this.setImageDrawable(charSet.get(chiffre));
     }
 
     @Background
     public void animateTile() {
         if (charSet.size() > 0) {
+
             CountDownTimer timer = new CountDownTimer(10000, 500) {
                 int chiffre = 0;
 
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    chiffre++;
-                    if (chiffre < charSet.size())
-                        setImage(chiffre);
-                    else {
-                        chiffre = 0;
-                        setImage(0);
-                    }
+
+                    chiffre = (++chiffre < charSet.size())?chiffre:0;
+                    setImage(chiffre);
                 }
 
                 @Override

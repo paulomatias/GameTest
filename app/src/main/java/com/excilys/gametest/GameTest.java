@@ -59,6 +59,7 @@ public class GameTest extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gametest);
+        Log.d(this.getClass().getSimpleName(), "Dans on create");
 
         //découpage de la tile map
         cutBitmap();
