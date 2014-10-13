@@ -28,7 +28,6 @@ import com.excilys.gametest.helper.StringHelper;
 
 import org.androidannotations.annotations.EActivity;
 
-@EActivity
 public class GameTest extends Activity {
 
     private ScaleGestureDetector scaleGestureDetector;
@@ -148,6 +147,7 @@ public class GameTest extends Activity {
                         if (tileElement.getCollide() == 0) {
                             tileElement.setCharSet(character.getCharSet());
                             tileElement.setImageDrawable(tileElement.getCharSet().get(1));
+                            tileElement.animateTile();
                         }
                         return false;
                     }
