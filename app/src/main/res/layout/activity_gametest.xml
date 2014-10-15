@@ -1,36 +1,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_gameBoard"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff000000">
+    android:layout_height="match_parent">
 
-    <com.excilys.gametest.views.VScroll
-        android:id="@+id/vs_gameBoard"
+    <Button
+        android:id="@+id/btn_town"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="@string/btn_town"/>
 
-        <com.excilys.gametest.views.HScroll
-            android:id="@+id/hs_gameBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:id="@+id/rl_boardContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center">
-
-                <TableLayout
-                    android:id="@+id/tl_gameBoardGround"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableLayout
-                    android:id="@+id/tl_gameBoardElement"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </RelativeLayout>
-        </com.excilys.gametest.views.HScroll>
-    </com.excilys.gametest.views.VScroll>
+    <Button
+        android:id="@+id/btn_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_town"
+        android:layout_marginTop="20dp"
+        android:text="@string/btn_map"/>
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.excilys.gametest.tile;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.ImageView;
 
 import org.androidannotations.annotations.Background;
@@ -28,6 +27,7 @@ public class Tile extends ImageView {
 
     @Background
     public void animateTile() {
+
         if (charSet.size() > 0) {
             collide = 1;
             CountDownTimer timer = new CountDownTimer(10000, 500) {
@@ -61,6 +61,7 @@ public class Tile extends ImageView {
         this.collide = collide;
     }
 
+    // Normalement tous les charsets que nous utiliserons auront 12 tiles
     public void setCharSet(List<Drawable> charSet) {
         this.charSet = charSet;
     }
